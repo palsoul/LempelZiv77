@@ -21,24 +21,36 @@ public class Encoder {
 
     private static String encode(String text) {
         StringBuilder encodedText = new StringBuilder();
-        StringBuilder buffer = new StringBuilder();
+        StringBuilder addedText = new StringBuilder();
+        String buffer;
 
         int i = 0;
         while (i < text.length()) {
-            int offset = 0, length = 0, j = 1;
-            while (j <= buffer.length()) {
-                while (text.charAt(i) == buffer.charAt(buffer.length() - j)) {
-                    offset = j;
-                    length++;
-                    i++;
-                    if (buffer.length() - j < 0) {
-                        j--;
-                    }
-                }
-            }
-            encodedText.append(offset + "," + length + "," + text.charAt(i) + "\n");
+            buffer = getBuffer(text, i, addedText);
         }
+    }
 
-        return encodedText.toString();
+    private static String getBuffer(String text, int i, StringBuilder addedText) {
+        int j = 1;
+        int offset = 0;
+        int length = 0;
+        while (j <= addedText.length()) {
+
+        }
+        if (offset > 0) {
+            return buildBuffer(text, i, offset, length);
+        } else {
+            return String.valueOf(text.charAt(i));
+        }
+    }
+
+    private static String buildBuffer(String text, int i, int offset, int length) {
+        StringBuilder buffer = new StringBuilder();
+        int k = offset;
+        while (length > 0) {
+            // TODO реализовать этот метод
+            buffer.append(String.valueOf(text.charAt(k)));
+        }
+        return null;
     }
 }
