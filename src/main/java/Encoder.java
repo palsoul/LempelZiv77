@@ -27,16 +27,20 @@ public class Encoder {
         while (i < text.length()) {
             System.out.println("i = " + i + ", " + text.charAt(i));
             int offset = 0, length = 0;
+            int tmpOffset = 0, tmpLength = 0;
             int j = 1;
             while (j <= i && i < text.length()) {
                 if (text.charAt(i - j) == text.charAt(i)) {
-                    offset = j;
-                    length = getLength(text, i, offset);
-                    i += length;
-                } else {
-                    j++;
+                    tmpOffset = j;
+                    tmpLength = getLength(text, i, j);
+                    if (tmpLength > length) {
+                        offset = tmpOffset;
+                        length = tmpLength;
+                    }
                 }
+                j++;
             }
+            i += length;
             if (offset > 0) {
                 encodedText.append(offset).append(",").append(length).append(",");
                 if (i < text.length()) encodedText.append(String.valueOf(text.charAt(i)));
@@ -52,15 +56,16 @@ public class Encoder {
     }
 
     private static int getLength(String text, int i, int offset) {
+        // TODO не добавляет последний символ
         int length = 0;
         int j = offset;
         while (text.charAt(i + length) == text.charAt(i - j)) {
-            System.out.print(text.charAt(i + length));
+            System.out.print(text.charAt(i + length) + ", ");
             length++;
-            System.out.println(" " + length);
-            if (i + length >= text.length()) break;
             j--;
             if (j == 0) j = offset;
+            System.out.println("offset = " + offset + ", length = " + length + ", j = " + j);
+            if (i + length >= text.length()) break;
         }
         return length;
     }
