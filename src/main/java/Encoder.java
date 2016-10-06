@@ -20,37 +20,48 @@ public class Encoder {
     }
 
     private static String encode(String text) {
+        System.out.println(text);
         StringBuilder encodedText = new StringBuilder();
-        StringBuilder addedText = new StringBuilder();
-        String buffer;
 
         int i = 0;
         while (i < text.length()) {
-            buffer = getBuffer(text, i, addedText);
+            System.out.println("i = " + i + ", " + text.charAt(i));
+            int offset = 0, length = 0;
+            int j = 1;
+            while (j <= i && i < text.length()) {
+                if (text.charAt(i - j) == text.charAt(i)) {
+                    offset = j;
+                    length = getLength(text, i, offset);
+                    i += length;
+                } else {
+                    j++;
+                }
+            }
+            if (offset > 0) {
+                encodedText.append(offset).append(",").append(length).append(",");
+                if (i < text.length()) encodedText.append(String.valueOf(text.charAt(i)));
+                encodedText.append("\n");
+            } else {
+                encodedText.append(0).append(",").append(0).append(",").append(String.valueOf(text.charAt(i))).append("\n");
+            }
+            if (i < text.length())
+            System.out.println(offset + ", " + length + ", " + text.charAt(i));
+            i++;
         }
+        return encodedText.toString();
     }
 
-    private static String getBuffer(String text, int i, StringBuilder addedText) {
-        int j = 1;
-        int offset = 0;
+    private static int getLength(String text, int i, int offset) {
         int length = 0;
-        while (j <= addedText.length()) {
-
+        int j = offset;
+        while (text.charAt(i + length) == text.charAt(i - j)) {
+            System.out.print(text.charAt(i + length));
+            length++;
+            System.out.println(" " + length);
+            if (i + length >= text.length()) break;
+            j--;
+            if (j == 0) j = offset;
         }
-        if (offset > 0) {
-            return buildBuffer(text, i, offset, length);
-        } else {
-            return String.valueOf(text.charAt(i));
-        }
-    }
-
-    private static String buildBuffer(String text, int i, int offset, int length) {
-        StringBuilder buffer = new StringBuilder();
-        int k = offset;
-        while (length > 0) {
-            // TODO реализовать этот метод
-            buffer.append(String.valueOf(text.charAt(k)));
-        }
-        return null;
+        return length;
     }
 }
