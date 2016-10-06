@@ -20,12 +20,10 @@ public class Encoder {
     }
 
     private static String encode(String text) {
-        System.out.println(text);
         StringBuilder encodedText = new StringBuilder();
 
         int i = 0;
         while (i < text.length()) {
-            System.out.println("i = " + i + ", " + text.charAt(i));
             int offset = 0, length = 0;
             int tmpOffset = 0, tmpLength = 0;
             int j = 1;
@@ -49,22 +47,18 @@ public class Encoder {
                 encodedText.append(0).append(",").append(0).append(",").append(String.valueOf(text.charAt(i))).append("\n");
             }
             if (i < text.length())
-            System.out.println(offset + ", " + length + ", " + text.charAt(i));
             i++;
         }
         return encodedText.toString();
     }
 
     private static int getLength(String text, int i, int offset) {
-        // TODO не добавляет последний символ
         int length = 0;
         int j = offset;
         while (text.charAt(i + length) == text.charAt(i - j)) {
-            System.out.print(text.charAt(i + length) + ", ");
             length++;
             j--;
             if (j == 0) j = offset;
-            System.out.println("offset = " + offset + ", length = " + length + ", j = " + j);
             if (i + length >= text.length()) break;
         }
         return length;
